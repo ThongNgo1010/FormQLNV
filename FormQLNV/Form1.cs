@@ -22,11 +22,12 @@ namespace FormQLNV
             btnLamMoi.Click += new EventHandler(LamMoi);
             btnThongKe.Click += new EventHandler(ThongKe);
             btnThoat.Click += new EventHandler(Thoat);
+            btnTim.Click += new EventHandler(Tim);
         }
 
         private void Thoat(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            this.Close();
         }
 
         private void ThongKe(object sender, EventArgs e)
@@ -36,7 +37,14 @@ namespace FormQLNV
 
         private void LamMoi(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            txtMaNV.Clear();
+            txtHoTen.Clear();
+            dateNgaySinh.ResetText();
+            txtSoDT.Clear();
+            txtHeSoLuong.Clear();
+            cboTenPhong.ResetText();
+            cboTenChucVu.ResetText();
+            txtTimKiem.Clear();
         }
 
         private void Xoa(object sender, EventArgs e)
