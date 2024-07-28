@@ -23,6 +23,26 @@ namespace FormQLNV
             btnThongKe.Click += new EventHandler(ThongKe);
             btnThoat.Click += new EventHandler(Thoat);
             btnTim.Click += new EventHandler(Tim);
+            dataGridView1.CellClick += new DataGridViewCellEventHandler(Data_Cell);
+        }
+
+        private void Data_Cell(object sender, DataGridViewCellEventArgs e)
+        {
+            int i = dataGridView1.CurrentCell.RowIndex;
+            txtMaNV.Text = dataGridView1.Rows[i].Cells[0].Value.ToString();
+            txtHoTen.Text = dataGridView1.Rows[i].Cells[1].Value.ToString();
+            dateNgaySinh.Text = dataGridView1.Rows[i].Cells[2].Value.ToString();
+            string gt = dataGridView1.Rows[i].Cells[3].Value.ToString();
+            if (gt == "True")
+            {
+                rdNam.Checked = true;
+            }
+            else
+                rdNu.Checked = true;
+            txtSoDT.Text = dataGridView1.Rows[i].Cells[4].Value.ToString();
+            txtHeSoLuong.Text = dataGridView1.Rows[i].Cells[5].Value.ToString();
+            cboTenPhong.SelectedValue = dataGridView1.Rows[i].Cells[6].Value.ToString();
+            cboTenChucVu.SelectedValue = dataGridView1.Rows[i].Cells[7].Value.ToString();
         }
 
         private void Tim(object sender, EventArgs e)
@@ -32,7 +52,13 @@ namespace FormQLNV
 
         private void Thoat(object sender, EventArgs e)
         {
-            this.Close();
+            DialogResult dr = MessageBox.Show("Bạn có chắc chắn muốn thoát không?",
+               "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            if (dr == DialogResult.Yes)
+            {
+                this.Close();
+            }
+
         }
 
         private void ThongKe(object sender, EventArgs e)
@@ -54,7 +80,18 @@ namespace FormQLNV
 
         private void Xoa(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            DialogResult dr = MessageBox.Show("Bạn có chắc chắn muốn xóa không?",
+               "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            if (dr == DialogResult.Yes)
+            {
+                int i = dataGridView1.CurrentCell.RowIndex;
+                string ma = dataGridView1.Rows[i].Cells[0].Value.ToString();
+                string sql = string.Format("delete from DSNV where MaNV ='{0}'", ma);
+                Data_Provider.moKetNoi();
+                Data_Provider.updateData(sql);
+                load_DSNV();
+                Data_Provider.dongKetNoi();
+            }
         }
 
         private void Sua(object sender, EventArgs e)
@@ -73,13 +110,12 @@ namespace FormQLNV
 #endregion
         private void Them(object sender, EventArgs e)
         {
-            
+            Data_Provider.moKetNoi();
             if (isNumber(txtHeSoLuong.Text) && !string.IsNullOrEmpty(txtHoTen.Text))
             {
-                Data_Provider.moKetNoi();
                 string sql = "insert into DSNV(HoTen, NgaySinh, GioiTinh, SoDT, HeSoLuong, MaPhong, MaChucVu)" +
                     "values(@ht, @ns, @gt, @soDT, @hsl, @maP, @maCV) ";
-                bool gt = drNam.Checked == true ? true : false;
+                bool gt = rdNam.Checked == true ? true : false;
                 object[] value = {txtHoTen.Text, dateNgaySinh.Value, gt, txtSoDT.Text,
                 float.Parse(txtHeSoLuong.Text), cboTenPhong.SelectedValue.ToString(), cboTenChucVu.SelectedValue.ToString()};
                 string[] name = { "@ht", "@ns", "@gt", "@soDT", "@hsl", "@maP", "@maCV" };

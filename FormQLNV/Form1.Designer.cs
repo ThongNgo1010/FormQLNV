@@ -46,7 +46,7 @@ namespace FormQLNV
             this.txtMaNV = new System.Windows.Forms.TextBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.rdNu = new System.Windows.Forms.RadioButton();
-            this.drNam = new System.Windows.Forms.RadioButton();
+            this.rdNam = new System.Windows.Forms.RadioButton();
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
@@ -216,7 +216,7 @@ namespace FormQLNV
             // groupBox4
             // 
             this.groupBox4.Controls.Add(this.rdNu);
-            this.groupBox4.Controls.Add(this.drNam);
+            this.groupBox4.Controls.Add(this.rdNam);
             this.groupBox4.Location = new System.Drawing.Point(24, 245);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(280, 100);
@@ -235,17 +235,17 @@ namespace FormQLNV
             this.rdNu.Text = "Nữ";
             this.rdNu.UseVisualStyleBackColor = true;
             // 
-            // drNam
+            // rdNam
             // 
-            this.drNam.AutoSize = true;
-            this.drNam.Checked = true;
-            this.drNam.Location = new System.Drawing.Point(19, 42);
-            this.drNam.Name = "drNam";
-            this.drNam.Size = new System.Drawing.Size(74, 29);
-            this.drNam.TabIndex = 0;
-            this.drNam.TabStop = true;
-            this.drNam.Text = "Nam";
-            this.drNam.UseVisualStyleBackColor = true;
+            this.rdNam.AutoSize = true;
+            this.rdNam.Checked = true;
+            this.rdNam.Location = new System.Drawing.Point(19, 42);
+            this.rdNam.Name = "rdNam";
+            this.rdNam.Size = new System.Drawing.Size(74, 29);
+            this.rdNam.TabIndex = 0;
+            this.rdNam.TabStop = true;
+            this.rdNam.Text = "Nam";
+            this.rdNam.UseVisualStyleBackColor = true;
             // 
             // label7
             // 
@@ -402,7 +402,7 @@ namespace FormQLNV
         private System.Windows.Forms.TextBox txtMaNV;
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.RadioButton rdNu;
-        private System.Windows.Forms.RadioButton drNam;
+        private System.Windows.Forms.RadioButton rdNam;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label5;

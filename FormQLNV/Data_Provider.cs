@@ -13,7 +13,7 @@ namespace FormQLNV
     public static class Data_Provider //dùng trực tiếp lớp từ lớp khác mà không cần tạo đối tượng
     {
         private static SqlConnection cnn;
-        private static SqlDataAdapter da;
+        private static SqlDataAdapter da; //Cầu nối giữa DataSet và cơ sở dữ liệu cho phép đổ dữ liệu vào một DataSet và cập nhật thay đổi vào database.
         private static SqlCommand cmd;
 
         //Kết nối đến CSDL
@@ -45,10 +45,13 @@ namespace FormQLNV
         {
             cmd = new SqlCommand(sql, cnn);
             cmd.Parameters.Clear();
-            for (int i = 0; i < value.Length; i++)
-                cmd.Parameters.AddWithValue(name[i], value[i]);
-
-            cmd.ExecuteNonQuery();//Thực thi câu lệnh truy vấn Insert, Update, Delete
+            if (value != null)
+            {
+                for (int i = 0; i < value.Length; i++)
+                    cmd.Parameters.AddWithValue(name[i], value[i]);
+            }
+            cmd.ExecuteNonQuery();
+            cmd.Dispose(); //Giải phóng tài nguyên khi kết thúc sử dụng SqlCommand
         }
     }
 }
