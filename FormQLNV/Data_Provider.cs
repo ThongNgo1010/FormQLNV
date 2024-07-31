@@ -41,17 +41,29 @@ namespace FormQLNV
         }
 
         //Cập nhật dữ liệu
+
+        //lấy các đối tượng object[] value truyền vào các trường name trong sql
         public static void updateData(string sql, object[] value=null, string[]name=null) //Xoa ko can object va string name
         {
-            cmd = new SqlCommand(sql, cnn);
+            cmd = new SqlCommand(sql, cnn); //Thông qua các câu lệnh SQL nó sẽ thực hiện câu lệnh truy vấn
             cmd.Parameters.Clear();
-            if (value != null)
+            if (value != null) //dùng cho trường hợp xóa, vì giá trị là null để không bị lỗi
             {
                 for (int i = 0; i < value.Length; i++)
                     cmd.Parameters.AddWithValue(name[i], value[i]);
             }
-            cmd.ExecuteNonQuery();
+            cmd.ExecuteNonQuery(); //thực thi câu lệnh Insert, update, delete
             cmd.Dispose(); //Giải phóng tài nguyên khi kết thúc sử dụng SqlCommand
+        }
+
+        //Kiểm tra khóa chính có trùng hay k (trường hợp bài có mã...) nếu phải nhập 
+        public static int checkData(string sql)//kiểm tra thông qua câu lệnh truy vấn "string sql"
+        {
+            int i = 0;
+            cmd = new SqlCommand(sql, cnn);
+            i = (int)cmd.ExecuteScalar();
+            cmd.Dispose();
+            return i;
         }
     }
 }

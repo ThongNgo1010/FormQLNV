@@ -47,7 +47,10 @@ namespace FormQLNV
 
         private void Tim(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            Data_Provider.moKetNoi();
+            string sql = string.Format("select * from DSNV where HoTen Like N'%{0}'", txtTimKiem.Text);
+            dataGridView1.DataSource = Data_Provider.getTable(sql);
+            Data_Provider.dongKetNoi();
         }
 
         private void Thoat(object sender, EventArgs e)
@@ -71,22 +74,25 @@ namespace FormQLNV
             txtMaNV.Clear();
             txtHoTen.Clear();
             dateNgaySinh.ResetText();
+            if (rdNam.Checked == false)
+                rdNam.Checked = true;
             txtSoDT.Clear();
             txtHeSoLuong.Clear();
             cboTenPhong.ResetText();
             cboTenChucVu.ResetText();
             txtTimKiem.Clear();
+            load_DSNV();
         }
 
         private void Xoa(object sender, EventArgs e)
         {
             DialogResult dr = MessageBox.Show("Bạn có chắc chắn muốn xóa không?",
-               "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+               "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (dr == DialogResult.Yes)
             {
-                int i = dataGridView1.CurrentCell.RowIndex;
-                string ma = dataGridView1.Rows[i].Cells[0].Value.ToString();
-                string sql = string.Format("delete from DSNV where MaNV ='{0}'", ma);
+                int i = dataGridView1.CurrentCell.RowIndex; //i là dòng đang chọn
+                int ma = int.Parse(dataGridView1.Rows[i].Cells[0].Value.ToString()); //Xác định vị trí trên Form
+                string sql = string.Format("delete from DSNV where MaNV ='{0}'", ma); //câu lệnh SQL khi có tham số truyền vào thì dùng Format / Tìm MaNV ở CSDL
                 Data_Provider.moKetNoi();
                 Data_Provider.updateData(sql);
                 load_DSNV();
@@ -96,7 +102,31 @@ namespace FormQLNV
 
         private void Sua(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            DialogResult dr = MessageBox.Show("Bạn có chắc chắn muốn cập nhật lại thông tin không?",
+                "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if(dr == DialogResult.Yes)
+            {
+                Data_Provider.moKetNoi();
+                if (isNumber(txtHeSoLuong.Text) && !string.IsNullOrEmpty(txtHoTen.Text))
+                {
+                    string sql = string.Format("update DSNV set HoTen = @ht, NgaySinh =@ns, GioiTinh = @gt, SoDT=@soDT," +
+                        "HeSoLuong=@hsl, MaPhong=@maP, MaChucVu=@maCV " +
+                        "where MaNV ='{0}'", txtMaNV.Text);
+
+                    bool gt = rdNam.Checked == true ? true : false;
+                    object[] value = {txtHoTen.Text, dateNgaySinh.Value, gt, txtSoDT.Text,
+                float.Parse(txtHeSoLuong.Text), cboTenPhong.SelectedValue.ToString(), cboTenChucVu.SelectedValue.ToString()};
+                    string[] name = { "@ht", "@ns", "@gt", "@soDT", "@hsl", "@maP", "@maCV" };
+
+                    Data_Provider.updateData(sql, value, name);
+                    load_DSNV();
+                }
+                else
+                    MessageBox.Show("Dữ liệu không hợp lệ!");
+
+                Data_Provider.dongKetNoi();
+
+            }
         }
 #region Kiểm tra tính hợp lệ dữ liệu
         //Kiểm tra giá trị số
@@ -111,6 +141,11 @@ namespace FormQLNV
         private void Them(object sender, EventArgs e)
         {
             Data_Provider.moKetNoi();
+/*            string sql1 = string.Format("Select count (*) from DSNV where MaNV = '{0}'", txtMaNV.Text);
+            if(Data_Provider.checkData(sql1) == 0 && isNumber(txtHeSoLuong.Text){
+
+            }*/
+
             if (isNumber(txtHeSoLuong.Text) && !string.IsNullOrEmpty(txtHoTen.Text))
             {
                 string sql = "insert into DSNV(HoTen, NgaySinh, GioiTinh, SoDT, HeSoLuong, MaPhong, MaChucVu)" +
